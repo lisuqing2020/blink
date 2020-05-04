@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+message RequestMessage {
+    int32  type_   = 1;
+    bytes  client_ = 2;
+    bytes  server_ = 3;
+    string sign_   = 4;
+    string data_   = 5;
+}
+
+message ResponseMessage {
+    int32  status_ = 1;
+    int32  key_    = 2;
+    bytes  client_ = 3;
+    bytes  server_ = 4;
+    string data_   = 5;
+}
