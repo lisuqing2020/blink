@@ -7,15 +7,16 @@ using std::string;
 
 class ResponseCodec: public Codec {
 private:
-    std::string str_;
+    string str_;
     ResponseMessage msg_;
+
+    void InitString(string str);
+    void InitMessage(int status, int key, string client, string server, string data);
 public:
     ResponseCodec();
     ResponseCodec(string str);
     ResponseCodec(int status, int key, string client, string server, string data);
 
-    void InitString(string str);
-    void InitMessage(int status, int key, string client, string server, string data);
     string EncodeMessage();
     void* DecodeMessage();
 
