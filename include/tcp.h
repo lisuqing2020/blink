@@ -4,6 +4,7 @@
 #include <string>
 #include <arpa/inet.h> 
 #include <unistd.h>
+#include <fcntl.h>
 using std::string;
 
 class TcpSocket {

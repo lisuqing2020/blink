@@ -14,10 +14,22 @@ void TcpServer::Listen(unsigned short port) {
 }
 
 TcpSocket* TcpServer::Accept(int timeout) {
-    struct sockaddr_in addr;
-    socklen_t len = sizeof(addr);
-    int socket = accept(monitor_, (struct sockaddr*)&addr, &len);
-    return new TcpSocket(socket);
+    fd_set readfds;
+    FD_ZERO(&readfds);
+    FD_SET(monitor_, &readfds);
+    struct timeval tv = {timeout, 0};
+    int ret = select(monitor_+1, NULL, &readfds, NULL, &tv);
+    if(ret == 0) {
+        // 超时...写缓冲区还是满的
+    } else if(ret > 0) {
+        // 可读...
+        struct sockaddr_in addr;
+        socklen_t len = sizeof(addr);
+        int socket = accept(monitor_, (struct sockaddr*)&addr, &len);
+        return new TcpSocket(socket);
+    } else {
+        // select出错...
+    }
 }
 
 TcpServer::~TcpServer() {
