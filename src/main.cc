@@ -10,4 +10,10 @@ int main(int argc, char* argv[]) {
 
     string data = rsa.PubDecrypt(ret);
     cout << data << endl;
+
+    string str = rsa.Sign("lizhan");
+    cout << str << endl;
+
+    bool b = rsa.Verify("lizhan", str);
+    cout << b << endl;
 }

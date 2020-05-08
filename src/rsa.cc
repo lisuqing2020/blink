@@ -58,6 +58,20 @@ string Rsa::PubDecrypt(string data) {
     return str;
 }
 
+string Rsa::Sign(string data, Level level) {
+    char* buf = new char[RSA_size(pri_)+1];
+    unsigned int len;
+    RSA_sign(level, (unsigned char*)data.c_str(), data.size(), (unsigned char*)buf, &len, pri_);
+    string ret = string(buf, len);
+    delete[] buf;
+    return ret;
+}
+
+bool Rsa::Verify(string data, string sign, Level level) {
+    int ret = RSA_verify(level, (unsigned char*)data.c_str(), data.size(), (unsigned char*)sign.c_str(), sign.size(), pub_);
+    return ret == 1 ? true : false;
+}
+
 Rsa::~Rsa() {
     RSA_free(pub_);
     RSA_free(pri_);

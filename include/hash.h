@@ -14,11 +14,16 @@ enum HashType {
 class Hash {
 private:
     HashType type_;
-    MD5_CTX* md5ctx_;
+    MD5_CTX* md5_;
+    SHA_CTX* sha_;
+    SHA256_CTX* sha224_;
+    SHA256_CTX* sha256_;
+    SHA512_CTX* sha384_;
+    SHA512_CTX* sha512_;
 public:
     Hash(HashType type);
-    void Add(string str);
-    string Encrypt();
+    virtual void Add(string str) = 0;
+    virtual string Encrypt() = 0;
     ~Hash();
 };
 
