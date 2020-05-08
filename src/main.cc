@@ -1,21 +1,13 @@
 #include <iostream>
-#include "factory.h"
+#include "rsa.h"
 using namespace std;
 
 int main(int argc, char* argv[]) {
-    RequestMessage reqmes;
-    reqmes.set_type_(1);
-    reqmes.set_client_("a");
-    reqmes.set_server_("b");
-    reqmes.set_sign_("c");
-    reqmes.set_data_("d");
+    Rsa rsa(2048);
 
-    Factory* fac = new RequestFactory(reqmes);
-    Codec* cc = fac->CreateCodec();
-    
-    string str = cc->EncodeMessage();
-    cout << str << endl;
+    string ret = rsa.PriEncrypt("hello world!");
+    cout << ret << endl;
 
-    RequestMessage* reqmes1 = (RequestMessage*)cc->DecodeMessage();
-    cout << reqmes1->type_() << " " << reqmes1->client_() << " " << reqmes1->server_() << " " << reqmes1->sign_() << " " << reqmes1->data_() << endl;
+    string data = rsa.PubDecrypt(ret);
+    cout << data << endl;
 }
