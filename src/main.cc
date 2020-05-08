@@ -1,19 +1,16 @@
 #include <iostream>
 #include "rsa.h"
+#include "aes.h"
 using namespace std;
 
 int main(int argc, char* argv[]) {
-    Rsa rsa(2048);
+    Aes aes("1596321785412369");
 
-    string ret = rsa.PriEncrypt("hello world!");
-    cout << ret << endl;
-
-    string data = rsa.PubDecrypt(ret);
-    cout << data << endl;
-
-    string str = rsa.Sign("lizhan");
+    string str = aes.Encrypt("lizhan");
     cout << str << endl;
 
-    bool b = rsa.Verify("lizhan", str);
-    cout << b << endl;
+    cout << "???\n";
+
+    string s = aes.Decrypt(str);
+    cout << s << endl;
 }
