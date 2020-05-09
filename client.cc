@@ -16,23 +16,23 @@ private:
     string server_;
     string client_;
     string host_;
-    int port_;
+    unsigned int port_;
 public:
-    Client();
+    Client(string file);
     bool Agree();
     bool Check();
     bool Cancel();
     ~Client();
 };
 
-Client::Client() {
-    ifstream ifs("config.json");
+Client::Client(string file) {
+    ifstream ifs(file.c_str());
     Reader reader;
     Value root;
     server_ = root["server"].asString();
     client_ = root["client"].asString();
-    host_   = root["host"].asString();
-    port_   = root["port"].asInt();
+    host_ = root["host"].asString();
+    port_ = root["port"].asUInt();
 }
 
 bool Client::Agree() {
@@ -78,10 +78,11 @@ bool Client::Agree() {
 
     // 6. 判断响应状态
     cout << "response status: " << resmes->status_() << endl;
+    return true;
 }
 
 Client::~Client() {}
 
 int main(int argc, char* argv[]) {
-    Client cli;
+    Client cli("client.json");
 }
