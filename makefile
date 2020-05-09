@@ -3,7 +3,7 @@ src    = $(wildcard src/*.cc)
 obj	   = $(patsubst src/%.cc,build/%.o,$(src))
 g++11  = g++ --std=c++11
 inc    = -Iinclude
-link   = -lprotobuf -lpthread -lcrypto
+link   = -lprotobuf -lpthread -lcrypto -ljson
 output = ./build/$(target)
 
 $(target):$(obj)
