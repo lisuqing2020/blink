@@ -18,7 +18,7 @@ TcpSocket* TcpServer::Accept(int timeout) {
     FD_ZERO(&readfds);
     FD_SET(monitor_, &readfds);
     struct timeval tv = {timeout, 0};
-    int ret = select(monitor_+1, NULL, &readfds, NULL, &tv);
+    int ret = select(monitor_+1, &readfds, NULL, NULL, &tv);
     if(ret == 0) {
         // 超时...写缓冲区还是满的
     } else if(ret > 0) {

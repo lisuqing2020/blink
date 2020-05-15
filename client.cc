@@ -7,6 +7,7 @@
 #include "rsa.h"
 #include "factory.h"
 #include "tcp.h"
+#include "hash.h"
 
 using namespace std;
 using namespace Json;
@@ -29,6 +30,7 @@ Client::Client(string file) {
     ifstream ifs(file.c_str());
     Reader reader;
     Value root;
+    reader.parse(ifs, root);
     server_ = root["server"].asString();
     client_ = root["client"].asString();
     host_ = root["host"].asString();
@@ -46,8 +48,14 @@ bool Client::Agree() {
     ifstream ifs("pub.pem");
     stringstream ss;
     ss << ifs.rdbuf();
+
+    // 签名数据长度，bits/8 - 11， 但是公钥很长，这里签hash值就可以
+    Hash hash(HASH_MD5);
+    hash.Add(ss.str());
+    string hashval = hash.Encrypt();
+
     reqmes.set_data_(ss.str());
-    reqmes.set_sign_(rsa.Sign(ss.str()));
+    reqmes.set_sign_(rsa.Sign(hashval));
     cout << "1. 数据准备完成...\n";
 
     // 2. 序列化
@@ -77,12 +85,21 @@ bool Client::Agree() {
     free(cc2);
 
     // 6. 判断响应状态
-    cout << "response status: " << resmes->status_() << endl;
-    return true;
+    bool ret = true;
+    if(!resmes->status_()) {
+        cout << "fail..." << endl;
+        ret = false;
+    } else {
+        string key = rsa.PriDecrypt(resmes->data_());
+        cout << "对称加密密钥: " << key << endl;
+    }
+
+    return ret;
 }
 
 Client::~Client() {}
 
 int main(int argc, char* argv[]) {
     Client cli("client.json");
+    cli.Agree();
 }

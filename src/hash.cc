@@ -4,7 +4,7 @@ Hash::Hash(HashType type) {
     type_ = type;
     switch(type_) {
         case HASH_MD5:
-        MD5_Init(md5_);
+        MD5_Init(&md5_);
         break;
     }
 }
@@ -12,7 +12,7 @@ Hash::Hash(HashType type) {
 void Hash::Add(string str) {
     switch(type_) {
         case HASH_MD5:
-        MD5_Update(md5_, str.c_str(), str.size());
+        MD5_Update(&md5_, str.c_str(), str.size());
         break;
     }
 }
@@ -22,7 +22,7 @@ string Hash::Encrypt() {
         case HASH_MD5:
         unsigned char md[MD5_DIGEST_LENGTH];
         char ret[MD5_DIGEST_LENGTH*2+1] = {0};
-        MD5_Final(md, md5_);
+        MD5_Final(md, &md5_);
         for(int i = 0; i < MD5_DIGEST_LENGTH; ++i) {
             sprintf(&ret[i*2], "%02x", md[i]);
         }

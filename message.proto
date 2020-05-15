@@ -4,8 +4,8 @@ message RequestMessage {
     int32  type_   = 1;
     bytes  client_ = 2;
     bytes  server_ = 3;
-    string sign_   = 4;
-    string data_   = 5;
+    bytes sign_   = 4;
+    bytes data_   = 5;
 }
 
 message ResponseMessage {
@@ -13,5 +13,5 @@ message ResponseMessage {
     int32  key_    = 2;
     bytes  client_ = 3;
     bytes  server_ = 4;
-    string data_   = 5;
+    bytes  data_   = 5;
 }

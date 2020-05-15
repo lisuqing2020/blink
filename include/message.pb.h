@@ -200,26 +200,26 @@ class RequestMessage :
   std::string* release_server_();
   void set_allocated_server_(std::string* server_);
 
-  // string sign_ = 4;
+  // bytes sign_ = 4;
   void clear_sign_();
   static const int kSignFieldNumber = 4;
   const std::string& sign_() const;
   void set_sign_(const std::string& value);
   void set_sign_(std::string&& value);
   void set_sign_(const char* value);
-  void set_sign_(const char* value, size_t size);
+  void set_sign_(const void* value, size_t size);
   std::string* mutable_sign_();
   std::string* release_sign_();
   void set_allocated_sign_(std::string* sign_);
 
-  // string data_ = 5;
+  // bytes data_ = 5;
   void clear_data_();
   static const int kDataFieldNumber = 5;
   const std::string& data_() const;
   void set_data_(const std::string& value);
   void set_data_(std::string&& value);
   void set_data_(const char* value);
-  void set_data_(const char* value, size_t size);
+  void set_data_(const void* value, size_t size);
   std::string* mutable_data_();
   std::string* release_data_();
   void set_allocated_data_(std::string* data_);
@@ -378,14 +378,14 @@ class ResponseMessage :
   std::string* release_server_();
   void set_allocated_server_(std::string* server_);
 
-  // string data_ = 5;
+  // bytes data_ = 5;
   void clear_data_();
   static const int kDataFieldNumber = 5;
   const std::string& data_() const;
   void set_data_(const std::string& value);
   void set_data_(std::string&& value);
   void set_data_(const char* value);
-  void set_data_(const char* value, size_t size);
+  void set_data_(const void* value, size_t size);
   std::string* mutable_data_();
   std::string* release_data_();
   void set_allocated_data_(std::string* data_);
@@ -460,7 +460,7 @@ inline void RequestMessage::set_client_(std::string&& value) {
   // @@protoc_insertion_point(field_set_rvalue:RequestMessage.client_)
 }
 inline void RequestMessage::set_client_(const char* value) {
-  // GOOGLE_DCHECK(value != nullptr);
+  GOOGLE_DCHECK(value != nullptr);
   
   client__.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:RequestMessage.client_)
@@ -511,7 +511,7 @@ inline void RequestMessage::set_server_(std::string&& value) {
   // @@protoc_insertion_point(field_set_rvalue:RequestMessage.server_)
 }
 inline void RequestMessage::set_server_(const char* value) {
-  // GOOGLE_DCHECK(value != nullptr);
+  GOOGLE_DCHECK(value != nullptr);
   
   server__.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:RequestMessage.server_)
@@ -542,7 +542,7 @@ inline void RequestMessage::set_allocated_server_(std::string* server_) {
   // @@protoc_insertion_point(field_set_allocated:RequestMessage.server_)
 }
 
-// string sign_ = 4;
+// bytes sign_ = 4;
 inline void RequestMessage::clear_sign_() {
   sign__.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
@@ -562,12 +562,12 @@ inline void RequestMessage::set_sign_(std::string&& value) {
   // @@protoc_insertion_point(field_set_rvalue:RequestMessage.sign_)
 }
 inline void RequestMessage::set_sign_(const char* value) {
-  // GOOGLE_DCHECK(value != nullptr);
+  GOOGLE_DCHECK(value != nullptr);
   
   sign__.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:RequestMessage.sign_)
 }
-inline void RequestMessage::set_sign_(const char* value, size_t size) {
+inline void RequestMessage::set_sign_(const void* value, size_t size) {
   
   sign__.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
@@ -593,7 +593,7 @@ inline void RequestMessage::set_allocated_sign_(std::string* sign_) {
   // @@protoc_insertion_point(field_set_allocated:RequestMessage.sign_)
 }
 
-// string data_ = 5;
+// bytes data_ = 5;
 inline void RequestMessage::clear_data_() {
   data__.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
@@ -613,12 +613,12 @@ inline void RequestMessage::set_data_(std::string&& value) {
   // @@protoc_insertion_point(field_set_rvalue:RequestMessage.data_)
 }
 inline void RequestMessage::set_data_(const char* value) {
-  // GOOGLE_DCHECK(value != nullptr);
+  GOOGLE_DCHECK(value != nullptr);
   
   data__.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:RequestMessage.data_)
 }
-inline void RequestMessage::set_data_(const char* value, size_t size) {
+inline void RequestMessage::set_data_(const void* value, size_t size) {
   
   data__.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
@@ -696,7 +696,7 @@ inline void ResponseMessage::set_client_(std::string&& value) {
   // @@protoc_insertion_point(field_set_rvalue:ResponseMessage.client_)
 }
 inline void ResponseMessage::set_client_(const char* value) {
-  // GOOGLE_DCHECK(value != nullptr);
+  GOOGLE_DCHECK(value != nullptr);
   
   client__.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:ResponseMessage.client_)
@@ -747,7 +747,7 @@ inline void ResponseMessage::set_server_(std::string&& value) {
   // @@protoc_insertion_point(field_set_rvalue:ResponseMessage.server_)
 }
 inline void ResponseMessage::set_server_(const char* value) {
-  // GOOGLE_DCHECK(value != nullptr);
+  GOOGLE_DCHECK(value != nullptr);
   
   server__.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:ResponseMessage.server_)
@@ -778,7 +778,7 @@ inline void ResponseMessage::set_allocated_server_(std::string* server_) {
   // @@protoc_insertion_point(field_set_allocated:ResponseMessage.server_)
 }
 
-// string data_ = 5;
+// bytes data_ = 5;
 inline void ResponseMessage::clear_data_() {
   data__.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
@@ -798,12 +798,12 @@ inline void ResponseMessage::set_data_(std::string&& value) {
   // @@protoc_insertion_point(field_set_rvalue:ResponseMessage.data_)
 }
 inline void ResponseMessage::set_data_(const char* value) {
-  // GOOGLE_DCHECK(value != nullptr);
+  GOOGLE_DCHECK(value != nullptr);
   
   data__.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:ResponseMessage.data_)
 }
-inline void ResponseMessage::set_data_(const char* value, size_t size) {
+inline void ResponseMessage::set_data_(const void* value, size_t size) {
   
   data__.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));

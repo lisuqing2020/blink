@@ -5,6 +5,7 @@
 #include <openssl/bio.h>
 #include <openssl/pem.h>
 #include <string>
+#include <cstring>
 using std::string;
 
 enum Level {
@@ -20,8 +21,11 @@ class Rsa {
 private:
     RSA* pub_;
     RSA* pri_;
+    string ToBase64(char* data, int len);
+    char* FromBase64(string data);
 public:
     Rsa(int bits);
+    Rsa(string file, bool isprivate = true);
 
     string PubEncrypt(string data);
     string PubDecrypt(string data);
