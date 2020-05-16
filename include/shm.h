@@ -9,8 +9,8 @@ class ShmNode {
 public:
     int status_;
     int keyid_;
-    char client_[12];
-    char server_[12];
+    char client_[128];
+    char server_[128];
     char key_[128];
 };
 
@@ -19,7 +19,7 @@ private:
     int shmid_;
     void* shmaddr_;
 public:
-    Shm(key_t key, size_t size);
+    Shm(key_t key, size_t size = 0);
     void* Combine();
     void Separate();
     ~Shm();

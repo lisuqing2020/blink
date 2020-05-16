@@ -8,6 +8,7 @@
 #include "factory.h"
 #include "tcp.h"
 #include "hash.h"
+#include "shm.h"
 
 using namespace std;
 using namespace Json;
@@ -18,6 +19,9 @@ private:
     string client_;
     string host_;
     unsigned int port_;
+    int key_;
+    int maxnode_;
+    KeyShm* shm_;
 public:
     Client(string file);
     bool Agree();
@@ -35,6 +39,10 @@ Client::Client(string file) {
     client_ = root["client"].asString();
     host_ = root["host"].asString();
     port_ = root["port"].asUInt();
+    key_ = root["key"].asInt();
+    maxnode_ = root["maxnode"].asInt();
+
+    shm_ = new KeyShm(key_, maxnode_);
 }
 
 bool Client::Agree() {
@@ -92,12 +100,22 @@ bool Client::Agree() {
     } else {
         string key = rsa.PriDecrypt(resmes->data_());
         cout << "对称加密密钥: " << key << endl;
+        ShmNode node;
+        strcpy(node.client_, client_.c_str());
+        strcpy(node.server_, server_.c_str());
+        strcpy(node.key_, key.c_str());
+        node.status_ = 0;
+        node.keyid_ = resmes->key_();
+        shm_ -> Write(&node);
+        cout << "对称加密密钥已写入共享内存\n";
     }
 
     return ret;
 }
 
-Client::~Client() {}
+Client::~Client() {
+    delete shm_;
+}
 
 int main(int argc, char* argv[]) {
     Client cli("client.json");
