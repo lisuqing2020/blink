@@ -85,29 +85,11 @@ string Server::RandomString(int length) {
 }
 
 string Server::Agree(RequestMessage* reqmes) {
-    /*
-     * 1. 校验签名
-     * 2. 将得到的公钥写入服务器磁盘
-     * 3. 生成随机字符串 -> 16/24/32 -> 对称加密密钥
-     * 4. 回复数据 -> 结构体
-     * 5. 数据初始化，密钥使用公钥加密
-     * 6. 通过工厂函数创建编码对象
-     * 7. 得到要回复客户端的数据
-     */
     ResponseMessage resmes;
-
-    // 将得到的客户端公钥写入磁盘
-    string filename = reqmes->client_() + ".pem";
-    ofstream ofs(filename);
-    ofs << reqmes->data_();
-    ofs.close();    // 数据刷到磁盘
-
-    // 签名校验
-    Rsa rsa(filename, false);
+    Rsa rsa(reqmes->data_());
     Hash hash(HASH_MD5);
     hash.Add(reqmes->data_());
     if(!rsa.Verify(hash.Encrypt(), reqmes->sign_())) {
-        // ...fail
         cout << "fail...\n";
         resmes.set_status_(false);
     } else {

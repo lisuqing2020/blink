@@ -26,18 +26,31 @@ Rsa::Rsa(int bits) {
     BN_free(bn);
 }
 
-Rsa::Rsa(string file, bool isprivate) {
+Rsa::Rsa(string data, bool ispub) {
     pub_ = RSA_new();
     pri_ = RSA_new();
 
-    BIO* bio = BIO_new_file(file.c_str(), "r");
-    if(isprivate) {
-        PEM_read_bio_RSAPrivateKey(bio, &pri_, NULL, NULL);
-    } else {
+    BIO* bio = BIO_new_mem_buf(data.c_str(), data.size());
+    if(ispub) {
         PEM_read_bio_RSAPublicKey(bio, &pub_, NULL, NULL);
+    } else {
+        PEM_read_bio_RSAPrivateKey(bio, &pri_, NULL, NULL);
     }
     BIO_free(bio);
 }
+
+// Rsa::Rsa(string file, bool ispub) {
+//     pub_ = RSA_new();
+//     pri_ = RSA_new();
+
+//     BIO* bio = BIO_new_file(file.c_str(), "r");
+//     if(ispub) {
+//         PEM_read_bio_RSAPublicKey(bio, &pub_, NULL, NULL);
+//     } else {
+//         PEM_read_bio_RSAPrivateKey(bio, &pri_, NULL, NULL);
+//     }
+//     BIO_free(bio);
+// }
 
 string Rsa::PubEncrypt(string data) {
     char* ret = new char[RSA_size(pub_)+1];
