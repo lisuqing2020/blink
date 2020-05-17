@@ -1,4 +1,10 @@
 {
     "server":"lizhan",
-    "port":520
+    "port":520,
+    "key":127,
+    "maxnode":20,
+    "dbhost": "127.0.0.1",
+    "db":"blink",
+    "user":"root",
+    "pass":"toor"
 }

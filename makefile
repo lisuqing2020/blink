@@ -3,7 +3,7 @@ src    = $(wildcard src/*.cc)
 obj	   = $(patsubst src/%.cc,build/%.o,$(src))
 g++11  = g++ --std=c++11
 inc    = -Iinclude
-link   = -lprotobuf -lpthread -lcrypto -ljson
+link   = -lprotobuf -lpthread -lcrypto -ljson -lmysqlclient -L./lib
 output = ./build/$(target)
 
 $(target):$(obj)

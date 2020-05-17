@@ -11,6 +11,8 @@
 #include "factory.h"
 #include "rsa.h"
 #include "hash.h"
+#include "shm.h"
+#include "db.h"
 using namespace std;
 using namespace Json;
 
@@ -19,6 +21,14 @@ private:
     map<pthread_t, TcpSocket*> sockets_;
     string server_;
     unsigned short port_;
+    int key_;
+    int maxnode_;
+    string db_;
+    string dbhost_;
+    string user_;
+    string pass_;
+    KeyShm* shm_;
+    MySQL mysql_;
     string RandomString(int length);
 public:
     Server(string file);
@@ -35,6 +45,15 @@ Server::Server(string file) {
     reader.parse(ifs, root);
     server_ = root["server"].asString();
     port_ = root["port"].asUInt();
+    key_ = root["key"].asInt();
+    maxnode_ = root["maxnode"].asInt();
+    db_ = root["db"].asString();
+    dbhost_ = root["dbhost"].asString();
+    user_ = root["uesr"].asString();
+    pass_ = root["pass"].asString();
+    shm_ = new KeyShm(key_, maxnode_);
+
+    mysql_.Connect((char*)dbhost_.c_str(), (char*)db_.c_str(), (char*)user_.c_str(), (char*)pass_.c_str());
 }
 
 void Server::Run() {
@@ -97,6 +116,18 @@ string Server::Agree(RequestMessage* reqmes) {
         resmes.set_server_(server_);
         string key = RandomString(24);
         resmes.set_data_(rsa.PubEncrypt(key));
+
+        ShmNode node;
+        strcpy(node.client_, reqmes->client_().c_str());
+        strcpy(node.server_, server_.c_str());
+        strcpy(node.key_, key.c_str());
+        node.status_ = 1;
+        node.keyid_ = mysql_.GetKeyID(); // 从数据库读
+        bool r = mysql_.InsertKeyInfo(node.client_, node.server_, node.keyid_, node.key_);
+        if(r) cout << "写数据库成功\n";
+        
+        shm_ -> Write(&node);
+        cout << "对称加密密钥已写入共享内存\n";
     }
 
     // 生成序列化对象
