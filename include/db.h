@@ -11,7 +11,7 @@ private:
 public:
     MySQL();
     bool Connect(char* host, char* db, char* user, char* pass, unsigned int port = 3306);
-    bool Query(char* sql);
+    bool Query(const char* sql);
     int GetKeyID();
     bool InsertKeyInfo(char* client, char* server, int keyid, char* key, int status = 1);
     ~MySQL();

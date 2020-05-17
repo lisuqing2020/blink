@@ -13,7 +13,7 @@ bool MySQL::Connect(char* host, char* db, char* user, char* pass, unsigned int p
     return true;
 }
 
-bool MySQL::Query(char* sql) {
+bool MySQL::Query(const char* sql) {
     int ret = mysql_query(mysql_, sql);
     if(ret) {
         fprintf(stderr, "mysql query has failed: %d\n", mysql_error(mysql_));
@@ -30,7 +30,7 @@ int MySQL::GetKeyID() {
     return atoi(row[0]);
 }
 
-bool MySQL::InsertKeyInfo(char* client, char* server, int keyid, char* key, int status = 1) {
+bool MySQL::InsertKeyInfo(char* client, char* server, int keyid, char* key, int status) {
     char sql[256] = {0};
     sprintf(sql, "insert into INFO (`CLIENT`,`SERVER`,`ID`,`STATUS`,`KEY`) values('%s','%s',%d,%d,'%s')", client, server, keyid, status, key);
     if(Query(sql) && Query("update KEYID set KEYID = KEYID + 1")) {

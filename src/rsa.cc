@@ -92,33 +92,31 @@ bool Rsa::Verify(string data, string sign, Level level) {
 }
 
 string Rsa::ToBase64(char* data, int len) {
-    // 准备一个base64BIO对象
-    BIO* b64  = BIO_new(BIO_f_base64());
-    // 准备一个内存的BIO对象
-    BIO* mem  = BIO_new(BIO_s_mem());
-    // 将base64和内存bio对象 -> bio链
-    BIO_push(b64, mem);	// 逻辑关系: b64->mem
-    // 数据通过base64进行编码之后 -> 存储到内存
-    // 往bio链中写数据
-    // 调用bio_write, base64对象默认做编码操作
-    BIO_write(b64, data, len);
-    // 将编码数据从bio内存对象中读出
-    BUF_MEM* ptrmem;
-    BIO_get_mem_ptr(b64, &ptrmem);
-
-    return string(ptrmem->data, ptrmem->length);
+    BIO* mem = BIO_new(BIO_s_mem());
+	BIO* bs64 = BIO_new(BIO_f_base64());
+	// mem添加到bs64中
+	bs64 = BIO_push(bs64, mem);
+	// 写数据
+	BIO_write(bs64, data, len);
+	BIO_flush(bs64);
+	// 得到内存对象指针
+	BUF_MEM *memPtr;
+	BIO_get_mem_ptr(bs64, &memPtr);
+	string ret = string(memPtr->data, memPtr->length-1);
+	BIO_free_all(bs64);
+	return ret;
 }
 
-char* FromBase64(string data) {
-    BIO* b64  = BIO_new(BIO_f_base64());
-    // 准备一个内存的BIO对象
-    BIO* mem = BIO_new_mem_buf(data.c_str(), data.size());
-    // 组织bio链
-    BIO_push(b64, mem);	// 逻辑关系: b64->mem
-    // 解码
-    char* buf = new char[data.size()];
-    BIO_read(b64, buf, sizeof(buf));
-    return buf;
+char* Rsa::FromBase64(string data) {
+    int length = data.size();
+	BIO* bs64 = BIO_new(BIO_f_base64());
+	BIO* mem = BIO_new_mem_buf(data.data(), length);
+	BIO_push(bs64, mem);
+	char* buf = new char[length];
+	memset(buf, 0, length);
+	BIO_read(bs64, buf, length);
+	BIO_free_all(bs64);
+	return buf;
 }
 
 Rsa::~Rsa() {

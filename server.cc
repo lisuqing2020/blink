@@ -60,7 +60,7 @@ void Server::Run() {
     TcpServer server;
     server.Listen(port_);
     while(1) {
-        TcpSocket* socket = server.Accept(10);
+        TcpSocket* socket = server.Accept(10000);
         pthread_t tid;
         pthread_create(&tid, NULL, Working, this);
         pthread_detach(tid);
@@ -103,11 +103,12 @@ string Server::Agree(RequestMessage* reqmes) {
     ofs.close();    // 数据刷到磁盘
 
     // 签名校验
-    Rsa rsa(filename.c_str(), false);
+    Rsa rsa(filename, false);
     Hash hash(HASH_MD5);
     hash.Add(reqmes->data_());
     if(!rsa.Verify(hash.Encrypt(), reqmes->sign_())) {
         // ...fail
+        cout << "fail...\n";
         resmes.set_status_(false);
     } else {
         cout << "签名校验成功！" << endl;
@@ -125,7 +126,7 @@ string Server::Agree(RequestMessage* reqmes) {
         node.keyid_ = mysql_.GetKeyID(); // 从数据库读
         bool r = mysql_.InsertKeyInfo(node.client_, node.server_, node.keyid_, node.key_);
         if(r) cout << "写数据库成功\n";
-        
+
         shm_ -> Write(&node);
         cout << "对称加密密钥已写入共享内存\n";
     }

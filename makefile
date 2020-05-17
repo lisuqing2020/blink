@@ -9,9 +9,15 @@ output = ./build/$(target)
 $(target):$(obj)
 	$(g++11) $^ -o $(output) $(inc) $(link)
 
+client:
+	$(g++11) $(src) client.cc -o build/client $(inc) $(link)
+
+server:
+	$(g++11) $(src) server.cc -o build/server $(inc) $(link)
+
 build/%.o:src/%.cc
 	$(g++11) -c $< -o $@ $(inc)
 
 .PHONY:clean
 clean:
-	rm -f $(obj) $(output)
+	rm -f build/*.o
