@@ -1,11 +1,7 @@
 #include "shm.h"
 
 Shm::Shm(key_t key, size_t size) {
-    if(size == 0) {
-        shmid_ = shmget(key, 0, 0); // 打开共享内存
-    } else {
-        shmid_ = shmget(key, size, IPC_CREAT|0644); // 创建共享内存
-    }
+    shmid_ = shmget(key, size, IPC_CREAT|0644); // 创建或打开共享内存
 }
 
 void* Shm::Combine() {

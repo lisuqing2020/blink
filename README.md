@@ -1,6 +1,6 @@
 # blink
 
-## dependency
+## 依赖
 
 ### [protobuf](https://github.com/protocolbuffers/protobuf/releases)
 - protobuf:3.8.0
@@ -33,3 +33,29 @@ $ ldconfig #如果提示找不到动态库，尝试使用该指令
 # 测试是否安装成功
 [jsoncpp]$ ./bin/linux-gcc-4.8.5/test_lib_json
 ``` 
+
+## 使用
+
+### 密钥协商服务端
+```shell
+[blink]$ make server
+[blink]$ ./build/server
+```
+
+### 密钥协商客户端
+```shell
+[blink]$ make client
+[blink]$ ./build/client
+```
+
+### 通信业务服务端
+```shell
+[blink]$ make tcps
+[blink]$ ./build/tcps
+```
+
+### 通信业务客户端
+```shell
+[blink]$ make tcpc
+[blink]$ ./build/tcpc
+```

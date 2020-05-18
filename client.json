@@ -3,6 +3,6 @@
     "server":"lizhan",
     "host":"127.0.0.1",
     "port":520,
-    "maxnode":1,
-    "key":127
+    "key":127,
+    "maxnode":1
 }

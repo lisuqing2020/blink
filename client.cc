@@ -119,5 +119,16 @@ Client::~Client() {
 
 int main(int argc, char* argv[]) {
     Client cli("client.json");
-    cli.Agree();
+    int op;
+    while(1) {
+        cout << "> 你想做点怎么？" << endl;
+        cout << "> 1 密钥协商" << endl;
+        cout << "> ";
+        cin >> op;
+        switch(op) {
+            case 1:
+                cli.Agree();
+                break;
+        }
+    }
 }
