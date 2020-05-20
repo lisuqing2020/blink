@@ -56,8 +56,8 @@ int main() {
     while(--i) {
         string sen = "hello server!";
         cout << "client send: " << sen << endl;
-        sock.Send(sen, 1);
         sen = blink.Encrypt(sen);
+        sock.Send(sen, 1);
         string rec = sock.Recv(1);
         rec = blink.Decrypt(rec);
         cout << "client recv: " << rec << endl;

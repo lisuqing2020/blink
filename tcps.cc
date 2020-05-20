@@ -59,7 +59,7 @@ int main() {
         cout << "server recv: " << rec << endl;
         string sen = "hello client!";
         cout << "server send: " << sen << endl;
-        sock->Send(sen,1);
         sen = blink.Encrypt(sen);
+        sock->Send(sen,1);
     }
 }
